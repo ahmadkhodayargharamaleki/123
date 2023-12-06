@@ -1,0 +1,28 @@
+from tensorflow.keras.callbacks import TensorBoard
+import os
+import datetime
+import tensorflow as tf
+
+def creat_model():
+  return tf.keras.models.Sequential([
+      tf.keras.layers.Flatten(input_shape=(28, 28)),
+      tf.keras.layers.Dense(512, activation='relu'),
+      tf.keras.layers.Dropout(0.2),
+      tf.keras.layers.Dense(10, activation='softmax')
+])
+
+model=creat_model()
+model.compile(optimizer='adam',
+              loss='sparse_categorical_crossentropy',
+              metrics=['accuracy'])
+
+logDir=".\\logs\\mlp512\\"+datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
+print("logDir: ", logDir)
+tensorboard_callback=TensorBoard(logDir)
+
+model.fit(x=x_train,
+          y=y_train,
+          epochs=5,
+          validation_data=(x_test, y_test),
+          callbacks=[tensorboard_callback])
+    
